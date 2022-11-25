@@ -99,7 +99,7 @@ function parse_f_source(f_filename,error) result(f_source)
     file_lines_lower=file_lines
     do i=1,size(file_lines_lower)
        file_lines_lower(i)%s=adjustl(lower(file_lines_lower(i)%s))
-    enddo
+    end do
 
     ! fnv_1a can only be applied to non-zero-length arrays
     if (len_trim(file_lines_lower) > 0) f_source%digest = fnv_1a(file_lines)
@@ -123,7 +123,7 @@ function parse_f_source(f_filename,error) result(f_source)
             ! Detect exported C-API via bind(C)
             if (.not.inside_interface .and. &
                 parse_subsequence(file_lines_lower(i)%s,'bind','(','c')) then
-                
+
                 do j=i,1,-1
 
                     if (index(file_lines_lower(j)%s,'function') > 0 .or. &
@@ -302,7 +302,7 @@ function parse_f_source(f_filename,error) result(f_source)
                     f_source%unit_type = FPM_UNIT_MODULE
                 end if
 
-                if (.not.inside_module) then    
+                if (.not.inside_module) then
                     inside_module = .true.
                 else
                     ! Must have missed an end module statement (can't assume a pure module)
@@ -341,7 +341,7 @@ function parse_f_source(f_filename,error) result(f_source)
                           file_lines_lower(i)%s)
                     return
                 end if
-                
+
                 if (f_source%unit_type /= FPM_UNIT_PROGRAM) then
                     f_source%unit_type = FPM_UNIT_SUBMODULE
                 end if
@@ -403,7 +403,7 @@ function parse_f_source(f_filename,error) result(f_source)
             !  (to check for code outside of modules)
             if (parse_sequence(file_lines_lower(i)%s,'end','module') .or. &
                 parse_sequence(file_lines_lower(i)%s,'end','submodule')) then
-                
+
                 inside_module = .false.
                 cycle
 
@@ -460,7 +460,7 @@ function parse_c_source(c_filename,error) result(c_source)
 
         c_source%unit_type = FPM_UNIT_CHEADER
 
-    else if (str_ends_with(lower(c_filename), ".cpp")) then 
+    else if (str_ends_with(lower(c_filename), ".cpp")) then
 
         c_source%unit_type = FPM_UNIT_CPPSOURCE
 
@@ -573,7 +573,7 @@ function parse_subsequence(string,t1,t2,t3,t4) result(found)
     found = .false.
     offset = 1
 
-    do 
+    do
 
         i = index(string(offset:),t1)
 
@@ -654,4 +654,3 @@ function parse_sequence(string,t1,t2,t3,t4) result(found)
 end function parse_sequence
 
 end module fpm_source_parsing
-

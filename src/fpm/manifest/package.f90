@@ -144,7 +144,7 @@ contains
         end if
         if (bad_name_error(error,'package',self%name))then
            return
-        endif
+        end if
 
         if (len(self%name) <= 0) then
             call syntax_error(error, "Package name must be a non-empty string")
@@ -214,7 +214,7 @@ contains
             call new_library(self%library, child, error)
             if (allocated(error)) return
         end if
-        
+
         call get_value(table, "profiles", child, requested=.false.)
         if (associated(child)) then
             call new_profiles(self%profiles, child, error)
@@ -424,7 +424,7 @@ contains
                 call self%dev_dependency(ii)%info(unit, pr - 1)
             end do
         end if
-        
+
         if (allocated(self%profiles)) then
             if (size(self%profiles) > 1 .or. pr > 2) then
                 write(unit, fmti) "- profiles", size(self%profiles)

@@ -83,7 +83,7 @@ integer :: length
             write(*,*)'<ERROR>help for '//names(i)//' ridiculiously small'
             tally=[tally,.false.]
             exit
-         endif
+         end if
          !!write(*,*)findloc(page1,'NAME')==1
          be=count(.not.tally)
          tally=[tally,count(page1=='NAME')==1]
@@ -97,10 +97,10 @@ integer :: length
             write(*,*)count(page1=='SYNOPSIS')
             write(*,*)count(page1=='DESCRIPTION')
             write(*,'(a)')page1
-         endif
+         end if
          write(*,*)'<INFO>have completed ',count(tally),' tests'
          call wipe('fpm_scratch_help.txt')
-      enddo
+      end do
 
 
    ! execute the fpm(1) commands
@@ -110,7 +110,7 @@ integer :: length
       call execute_command_line(path,exitstat=estat,cmdstat=cstat,cmdmsg=message)
       write(*,'(*(g0))')'<INFO>CMD=',path,' EXITSTAT=',estat,' CMDSTAT=',cstat,' MESSAGE=',trim(message)
       tally=[tally,all([estat==0,cstat==0])]
-   enddo
+   end do
 
    ! compare book written in fragments with manual
    call swallow('fpm_scratch_help.txt',book1)
@@ -130,8 +130,8 @@ integer :: length
       else
          write(*,*)'<INFO>manual and "debug" appended pages are the same'
          tally=[tally,.true.]
-      endif
-   endif
+      end if
+   end if
 
    ! overall size of manual
    !chars=size(book2)
@@ -144,7 +144,7 @@ integer :: length
    else
       write(*,*)'<INFO>"debug" manual size in bytes=',chars,' lines=',lines
       tally=[tally,.true.]
-   endif
+   end if
 
    write(*,'("<INFO>HELP TEST TALLY=",*(g0))')tally
    call wipe('fpm_scratch_help.txt')
@@ -154,7 +154,7 @@ integer :: length
    else
       write(*,*)'<INFO>FAILED: PASSED=',count(tally),' FAILED=',count(.not.tally)
       stop 5
-   endif
+   end if
    write(*,'(g0:,1x)')'<INFO>TEST help SUBCOMMAND COMPLETE'
 contains
 
@@ -168,10 +168,10 @@ if(ios==0)then
    close(unit=lun,iostat=ios,status='delete',iomsg=message)
    if(ios/=0)then
       write(*,*)'<ERROR>'//trim(message)
-   endif
+   end if
 else
    write(*,*)'<ERROR>'//trim(message)
-endif
+end if
 end subroutine wipe
 
 subroutine slurp(filename,text)
@@ -193,18 +193,18 @@ character(len=4096)                      :: local_filename
       if(nchars<=0)then
          call stderr_local( '*slurp* empty file '//trim(local_filename) )
          return
-      endif
+      end if
       ! read file into text array
       if(allocated(text))deallocate(text) ! make sure text array not allocated
       allocate ( text(nchars) )           ! make enough storage to hold file
       read(igetunit,iostat=ios,iomsg=message) text      ! load input file -> text array
       if(ios/=0)then
          call stderr_local( '*slurp* bad read of '//trim(local_filename)//':'//trim(message) )
-      endif
+      end if
    else
       call stderr_local('*slurp* '//message)
       allocate ( text(0) )           ! make enough storage to hold file
-   endif
+   end if
    close(iostat=ios,unit=igetunit)            ! close if opened successfully or not
 end subroutine slurp
 
@@ -227,7 +227,7 @@ character(len=1),allocatable             :: text(:)    ! array to hold file in m
    else  ! convert array of characters to array of lines
       pageout=page(text)
       deallocate(text)     ! release memory
-   endif
+   end if
 end subroutine swallow
 
 function page(array)  result (table)
@@ -258,13 +258,13 @@ character(len=1),parameter   :: cr=char(13)
          length=0
       else
          length=length+1
-      endif
-   enddo
+      end if
+   end do
    if(sz>0)then
       if(array(sz)/=nl)then
          lines=lines+1
-      endif
-   endif
+      end if
+   end if
 
    if(allocated(table))deallocate(table)
    !intel-bug!allocate(character(len=linelength) :: table(lines))
@@ -284,10 +284,10 @@ character(len=1),parameter   :: cr=char(13)
             write(*,*)'<ERROR> adding line past end of text',linecount,size(table)
          else
             table(linecount)(position:position)=array(i)
-         endif
+         end if
          position=position+1
-      endif
-   enddo
+      end if
+   end do
 end function page
 
 end program help_test

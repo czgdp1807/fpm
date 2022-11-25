@@ -187,7 +187,7 @@ character(*), parameter :: &
 character(*), parameter :: &
     flag_lfortran_opt = " --fast"
 
-    
+
 contains
 
 
@@ -417,7 +417,7 @@ pure subroutine set_cpp_preprocessor_flags(id, flags)
 
 end subroutine set_cpp_preprocessor_flags
 
-!> This function will parse and read the macros list and 
+!> This function will parse and read the macros list and
 !> return them as defined flags.
 function get_macros(id, macros_list, version) result(macros)
     integer(compiler_enum), intent(in) :: id
@@ -427,7 +427,7 @@ function get_macros(id, macros_list, version) result(macros)
     character(len=:), allocatable :: macros
     character(len=:), allocatable :: macro_definition_symbol
     character(:), allocatable :: valued_macros(:)
-    
+
 
     integer :: i
 
@@ -450,10 +450,10 @@ function get_macros(id, macros_list, version) result(macros)
     end if
 
     do i = 1, size(macros_list)
-        
+
         !> Split the macro name and value.
         call split(macros_list(i)%s, valued_macros, delimiters="=")
- 
+
         if (size(valued_macros) > 1) then
             !> Check if the value of macro starts with '{' character.
             if (str_begins_with_str(trim(valued_macros(size(valued_macros))), "{")) then
@@ -463,23 +463,23 @@ function get_macros(id, macros_list, version) result(macros)
 
                     !> Check if the string contains "version" as substring.
                     if (index(valued_macros(size(valued_macros)), "version") /= 0) then
-                    
+
                         !> These conditions are placed in order to ensure proper spacing between the macros.
                         if (len(macros) == 0) then
                             macros = macros//macro_definition_symbol//trim(valued_macros(1))//'='//version
-                        else 
+                        else
                             macros = macros//' '//macro_definition_symbol//trim(valued_macros(1))//'='//version
                         end if
                         cycle
                     end if
                 end if
-            end if 
+            end if
         end if
-         
+
         !> These conditions are placed in order to ensure proper spacing between the macros.
         if (len(macros) == 0) then
             macros = ' '//macros//macro_definition_symbol//macros_list(i)%s
-        else 
+        else
             macros = macros//' '//macro_definition_symbol//macros_list(i)%s
         end if
 
@@ -641,7 +641,7 @@ function get_compiler_id(compiler) result(id)
             call split(full_command, full_command_parts, delimiters=' ')
             if(size(full_command_parts) > 0)then
                command = trim(full_command_parts(1))
-            endif
+            end if
             if (allocated(command)) then
                 id = get_id(command)
                 if (id /= id_unknown) return
@@ -803,7 +803,7 @@ subroutine new_compiler(self, fc, cc, cxx, echo, verbose)
     logical, intent(in) :: verbose
 
     self%id = get_compiler_id(fc)
-    
+
     self%echo = echo
     self%verbose = verbose
     self%fc = fc

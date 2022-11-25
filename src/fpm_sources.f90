@@ -213,7 +213,7 @@ subroutine get_executable_source_dirs(exe_dirs,executables)
 
     do i=1,size(executables)
        dirs_temp(i)%s=' '
-    enddo
+    end do
 
     do i=1,size(executables)
         if (.not.(executables(i)%source_dir .in. dirs_temp)) then

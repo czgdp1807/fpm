@@ -85,12 +85,12 @@ contains
         call get_command_argument(idx, length=length, status=stat)
         if (stat /= 0) then
             return
-        endif
+        end if
 
         allocate(character(len=length) :: arg, stat=stat)
         if (stat /= 0) then
             return
-        endif
+        end if
 
         if (length > 0) then
             call get_command_argument(idx, arg, status=stat)

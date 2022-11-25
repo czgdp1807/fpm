@@ -162,14 +162,14 @@ contains
             & exists(join_path(root, "example", "main.f90"))) then
             allocate(package%example(1))
             call default_example(package%example(1), package%name)
-        endif
+        end if
 
         ! Populate test in case we find the default test directory
         if (.not.allocated(package%test) .and. &
             & exists(join_path(root, "test", "main.f90"))) then
             allocate(package%test(1))
             call default_test(package%test(1), package%name)
-        endif
+        end if
 
         if (.not.(allocated(package%library) &
             & .or. allocated(package%executable) &

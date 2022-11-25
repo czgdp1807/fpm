@@ -72,15 +72,15 @@ character(len=:),allocatable  :: rm_command
          write(*,*)'        you must remove scratch directories before performing this test'
          write(*,'(*(g0:,1x))')'directories:',(trim(directories(j)),j=1,size(directories)),'name-with-hyphens'
          stop
-      endif
-   enddo
+      end if
+   end do
    ! execute the fpm(1) commands
    do i=1,size(cmds)
       message=''
       write(*,*)path//' '//cmds(i)
       call execute_command_line(path//' '//cmds(i),exitstat=estat,cmdstat=cstat,cmdmsg=message)
       write(*,'(*(g0))')'CMD=',trim(cmds(i)),' EXITSTAT=',estat,' CMDSTAT=',cstat,' MESSAGE=',trim(message)
-   enddo
+   end do
 
    if( is_dir('name-with-hyphens') ) then
        tally=[tally,.true.]
@@ -88,7 +88,7 @@ character(len=:),allocatable  :: rm_command
     else
        write(*,*)'ERROR: directory name-with-hyphens/ exists'
        tally=[tally,.false.]
-    endif
+    end if
 
    ! assuming hidden files in .git and .gitignore are ignored for now
    TESTS: do i=1,size(directories)
@@ -130,7 +130,7 @@ character(len=:),allocatable  :: rm_command
             write(*,*)'WARNING: unexpected number of files in file list=',size(file_names),' expected ',size(expected)
             write(*,'("EXPECTED: ",*(g0:,","))')(scr//trim(expected(j)),j=1,size(expected))
             write(*,'("FOUND:    ",*(g0:,","))')(trim(file_names(j)%s),j=1,size(file_names))
-         endif
+         end if
 
          do j=1,size(expected)
 
@@ -142,11 +142,11 @@ character(len=:),allocatable  :: rm_command
                 write(*,'(*(g0))')'       BUT NO MATCH FOR ',expected(j)
                 tally=[tally,.false.]
                 cycle TESTS
-             endif
-         enddo
+             end if
+         end do
          tally=[tally,.true.]
-      endif
-   enddo TESTS
+      end if
+   end do TESTS
 
    ! clean up scratch files; might want an option to leave them for inspection
    select case (get_os_type())
@@ -168,7 +168,7 @@ character(len=:),allocatable  :: rm_command
    else
       write(*,*)'FAILED: PASSED=',count(tally),' FAILED=',count(.not.tally)
       stop 5
-   endif
+   end if
 contains
   function get_command_path() result(prog)
     character(len=:), allocatable :: prog

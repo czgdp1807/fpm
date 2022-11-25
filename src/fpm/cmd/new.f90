@@ -91,7 +91,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
     else
         ! make new directory
         call mkdir(settings%name)
-    endif
+    end if
 
     !> temporarily change to new directory as a test. NB: System dependent
     call run('cd '//settings%name)
@@ -259,7 +259,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
         &'                                                                                ',&
         &'#link = ["blas", "lapack"]                                                      ',&
         &'']
-    endif
+    end if
 
     if(settings%with_bare)then
     elseif(settings%with_lib)then
@@ -306,7 +306,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
             &'  # modules. For example, src/a/b/c/d.f90 must define a module called a_b_c_d.  ',&
             &'  # Again, this is not enforced but may be required in future releases.         ',&
             &'']
-        endif
+        end if
         ! create placeholder module src/bname.f90
         littlefile=[character(len=80) ::          &
         &'module '//to_fortran_name(bname),       &
@@ -322,7 +322,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
         ! create NAME/src/NAME.f90
         call warnwrite(join_path(settings%name, 'src', bname//'.f90'),&
          & littlefile)
-    endif
+    end if
 
     if(settings%with_full)then
         tomlfile=[character(len=80) ::  tomlfile ,&
@@ -398,7 +398,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
         &'#M_msg    = { git = "https://github.com/urbanjost/M_msg.git" }                  ',&
         &'#M_verify = { git = "https://github.com/urbanjost/M_verify.git" }               ',&
         &'']
-    endif
+    end if
     if(settings%with_bare)then
     elseif(settings%with_executable)then
         ! create next section of fpm.toml
@@ -454,7 +454,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
            &'#helloff = { git = "https://gitlab.com/everythingfunctional/helloff.git" }      ',&
            &'#M_path  = { git = "https://github.com/urbanjost/M_path.git" }                  ',&
            &'']
-        endif
+        end if
 
         if(exists(bname//'/src/'))then
             littlefile=[character(len=80) ::          &
@@ -471,9 +471,9 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
             &'',                                             &
             &'  print *, "hello from project '//bname//'"',  &
             &'end program main']
-        endif
+        end if
         call warnwrite(join_path(settings%name, 'app/main.f90'), littlefile)
-    endif
+    end if
 
     if(settings%with_bare)then
     elseif(settings%with_test)then
@@ -509,7 +509,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
            &'#M_io    = { git = "https://github.com/urbanjost/M_io.git" }                    ',&
            &'#M_system= { git = "https://github.com/urbanjost/M_system.git" }                ',&
            &'']
-        endif
+        end if
 
         littlefile=[character(len=80) ::       &
         &'program check',                      &
@@ -519,7 +519,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
         &'end program check']
         ! create NAME/test/check.f90
         call warnwrite(join_path(settings%name, 'test/check.f90'), littlefile)
-    endif
+    end if
 
     if(settings%with_bare)then
     elseif(settings%with_example)then
@@ -553,7 +553,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
            &'#M_kracken95  = { git = "https://github.com/urbanjost/M_kracken95.git" }        ',&
            &'#datetime = {git = "https://github.com/wavebitscientific/datetime-fortran.git" }',&
            &'']
-        endif
+        end if
 
         littlefile=[character(len=80) ::          &
         &'program demo',                          &
@@ -563,7 +563,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
         &'end program demo']
         ! create NAME/example/demo.f90
         call warnwrite(join_path(settings%name, 'example/demo.f90'), littlefile)
-    endif
+    end if
 
     ! now that built it write NAME/fpm.toml
     if( allocated(tomlfile) )then
@@ -571,11 +571,11 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
         call warnwrite(join_path(settings%name, 'fpm.toml'), tomlfile)
     else
         call create_verified_basic_manifest(join_path(settings%name, 'fpm.toml'))
-    endif
+    end if
     ! assumes git(1) is installed and in path
     if(which('git')/='')then
       call run('git init ' // settings%name)
-    endif
+    end if
 contains
 
 function git_metadata(what) result(returned)
@@ -616,13 +616,13 @@ function git_metadata(what) result(returned)
            if (stat == 0 .and. temp_value /= '') then
               ! Return output from successful command
               returned=temp_value
-           endif
-        endif
+           end if
+        end if
         ! Always do the CLOSE because a failed open has unpredictable results.
         ! Add IOSTAT so a failed close does not cause program to stop
         close(unit, status="delete",iostat=stat)
-     endif
-  endif
+     end if
+  end if
 end function git_metadata
 
 subroutine create_verified_basic_manifest(filename)
@@ -643,7 +643,7 @@ character(len=*),intent(in) :: filename
        write(stderr,'(*(g0,1x))')'<INFO>  ',filename,&
        & 'already exists. Not overwriting'
        return
-    endif
+    end if
     !> get date to put into metadata in manifest file "fpm.toml"
     call date_and_time(DATE=date)
     table = toml_table()
@@ -662,7 +662,7 @@ character(len=*),intent(in) :: filename
     if (allocated(error)) call fpm_stop( 3,'')
     if(settings%verbose)then
        call table%accept(ser)
-    endif
+    end if
     ser%unit=lun
     call table%accept(ser)
     call fileclose(lun) ! fileopen stops on error
@@ -694,9 +694,9 @@ if (allocated(table)) then
       ! can be written to the standard output by passing the `toml_serializer`
       ! as visitor to the table.
       call table%accept(ser)
-   endif
+   end if
    call table%destroy
-endif
+end if
 
 end subroutine validate_toml_data
 

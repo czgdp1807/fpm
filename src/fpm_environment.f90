@@ -189,7 +189,7 @@ contains
            end select
         else
            VALUE=''
-        endif
+        end if
         if(VALUE==''.and.present(DEFAULT))VALUE=DEFAULT
      end function get_env
 
@@ -220,12 +220,12 @@ contains
                         args=args//quote//arg//quote//' '
                     else
                         args=args//arg//' '
-                    endif
+                    end if
                 else
                     args=args//repeat(quote,2)//' '
-                endif
-             endif
-         enddo
+                end if
+             end if
+         end do
     end function get_command_arguments_quoted
 
 function separator() result(sep)
@@ -276,7 +276,7 @@ character(len=:),allocatable :: fname
    !*ifort_bug*!   if(sep_cache/=' ')then  ! use cached value. NOTE:  A parallel code might theoretically use multiple OS
    !*ifort_bug*!      sep=sep_cache
    !*ifort_bug*!      return
-   !*ifort_bug*!   endif
+   !*ifort_bug*!   end if
 
    arg0_length=0
    name=' '
@@ -312,10 +312,10 @@ character(len=:),allocatable :: fname
             else ! check environment variable PATH
                sep=merge('\','/',index(get_env('PATH'),'\')/=0)
                !*!write(*,*)'<WARNING>unknown system directory path separator'
-            endif
-         endif
-      endif
-   endif
+            end if
+         end if
+      end if
+   end if
    !*ifort_bug*!sep_cache=sep
 end function separator
 end module fpm_environment

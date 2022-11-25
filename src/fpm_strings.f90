@@ -233,12 +233,12 @@ elemental pure function lower(str,begin,end) result (string)
     ibegin = 1
     if (present(begin))then
         ibegin = max(ibegin,begin)
-    endif
+    end if
 
     iend = len_trim(str)
     if (present(end))then
         iend= min(iend,end)
-    endif
+    end if
 
     do i = ibegin, iend                               ! step thru each letter in the string in specified range
         select case (str(i:i))
@@ -352,14 +352,14 @@ subroutine split(input_line,array,delimiters,order,nulls)
             dlim=delimiters
         else                                                           ! DELIMITERS was specified on call as empty string
             dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0) ! use default delimiter when not specified
-        endif
+        end if
     else                                                              ! no delimiter value was specified
         dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)    ! use default delimiter when not specified
-    endif
+    end if
     idlim=len(dlim)                                                   ! dlim a lot of blanks on some machines if dlim is a big string
 
-    if(present(order))then; ordr=lower(adjustl(order)); else; ordr='sequential'; endif ! decide on value for optional ORDER parameter
-    if(present(nulls))then; nlls=lower(adjustl(nulls)); else; nlls='ignore'    ; endif ! optional parameter
+    if(present(order))then; ordr=lower(adjustl(order)); else; ordr='sequential'; end if ! decide on value for optional ORDER parameter
+    if(present(nulls))then; nlls=lower(adjustl(nulls)); else; nlls='ignore'    ; end if ! optional parameter
 
     n=len(input_line)+1                        ! max number of strings INPUT_LINE could split into if all delimiter
     allocate(ibegin(n))                        ! allocate enough space to hold starting location of tokens if string all tokens
@@ -386,20 +386,20 @@ subroutine split(input_line,array,delimiters,order,nulls)
                 ifound=index(input_line(ibegin(i30):ilen),dlim(i10:i10))
                 IF(ifound>0)then
                     iterm(i30)=min(iterm(i30),ifound+ibegin(i30)-2)
-                endif
-            enddo
+                end if
+            end do
             icol=iterm(i30)+2                                     ! next place to look as found end of this token
             inotnull=inotnull+1                                   ! increment count of number of tokens not composed of delimiters
             else                                                     ! character is a delimiter for a null string
             iterm(i30)=icol-1                                     ! record assumed end of string. Will be less than beginning
             icol=icol+1                                           ! advance pointer into input string
-            endif
+            end if
             imax=max(imax,iterm(i30)-ibegin(i30)+1)
             icount=i30                                               ! increment count of number of tokens found
             if(icol>ilen)then                                     ! no text left
             exit INFINITE
-            endif
-        enddo INFINITE
+            end if
+        end do INFINITE
 
     end select
 
@@ -428,8 +428,8 @@ subroutine split(input_line,array,delimiters,order,nulls)
         else
             array(ii)=input_line(ibegin(i20):iterm(i20))
             ii=ii+iiii
-        endif
-    enddo
+        end if
+    end do
 end subroutine split
 
 !> Returns string with characters in charset replaced with target_char.
@@ -569,10 +569,10 @@ character(len=:),allocatable         :: sep_local, left_local, right_local
 character(len=:),allocatable         :: string
 logical                              :: trm_local
 integer                              :: i
-   if(present(sep))then   ; sep_local=sep     ; else ; sep_local=''     ; endif
-   if(present(trm))then   ; trm_local=trm     ; else ; trm_local=.true. ; endif
-   if(present(left))then  ; left_local=left   ; else ; left_local=''    ; endif
-   if(present(right))then ; right_local=right ; else ; right_local=''   ; endif
+   if(present(sep))then   ; sep_local=sep     ; else ; sep_local=''     ; end if
+   if(present(trm))then   ; trm_local=trm     ; else ; trm_local=.true. ; end if
+   if(present(left))then  ; left_local=left   ; else ; left_local=''    ; end if
+   if(present(right))then ; right_local=right ; else ; right_local=''   ; end if
    string=''
    if(size(str)==0)then
       string=string//left_local//right_local
@@ -582,14 +582,14 @@ integer                              :: i
             string=string//left_local//trim(str(i))//right_local//sep_local
          else
             string=string//left_local//str(i)//right_local//sep_local
-         endif
-      enddo
+         end if
+      end do
       if(trm_local)then
          string=string//left_local//trim(str(i))//right_local
       else
          string=string//left_local//str(i)//right_local
-      endif
-   endif
+      end if
+   end if
    if(present(start))string=start//string
    if(present(end))string=string//end
 end function join
@@ -781,13 +781,13 @@ end function join
 !!
 !!      ! A case-insensitive algorithm test.
 !!      ! allpassed=allpassed .and. test("mississippi", "*issip*PI", .true.)
-!!     enddo
+!!     end do
 !!
 !!     if (allpassed)then
 !!        write(*,'(a)')"Passed",nReps
 !!     else
 !!        write(*,'(a)')"Failed"
-!!     endif
+!!     end if
 !!    contains
 !!    ! This is a test program for wildcard matching routines.
 !!    ! It can be used either to test a single routine for correctness,
@@ -813,7 +813,7 @@ end function join
 !!          if(nReps == 1) write(*,*)"Passed match on ",tame," vs. ", wild
 !!       else
 !!          if(nReps == 1) write(*,*)"Failed match on ",tame," vs. ", wild
-!!       endif
+!!       end if
 !!
 !!    end function test
 !!    end program demo_glob
@@ -855,12 +855,12 @@ character(len=:),allocatable :: tbookmark, wbookmark
                wi=wi+1
             else
                exit
-            endif
-         enddo
+            end if
+         end do
          if(wildtext(wi:wi)==NULL) then        ! "x" matches "*"
             glob=.true.
             return
-         endif
+         end if
          if(wildtext(wi:wi) /= '?') then
             ! Fast-forward to next possible match.
             do while (tametext(ti:ti) /= wildtext(wi:wi))
@@ -868,9 +868,9 @@ character(len=:),allocatable :: tbookmark, wbookmark
                if (tametext(ti:ti)==NULL)then
                   glob=.false.
                   return                         ! "x" doesn't match "*y*"
-               endif
-            enddo
-         endif
+               end if
+            end do
+         end if
          wbookmark = wildtext(wi:)
          tbookmark = tametext(ti:)
       elseif(tametext(ti:ti) /= wildtext(wi:wi) .and. wildtext(wi:wi) /= '?') then
@@ -888,16 +888,16 @@ character(len=:),allocatable :: tbookmark, wbookmark
                   cycle                          ! "xy" matches "*y"
                else
                   wi=wi+1
-               endif
-            endif
+               end if
+            end if
             if (tametext(ti:ti)/=NULL) then
                ti=ti+1
                cycle                             ! "mississippi" matches "*sip*"
-            endif
-         endif
+            end if
+         end if
          glob=.false.
          return                                  ! "xy" doesn't match "x"
-      endif
+      end if
       ti=ti+1
       wi=wi+1
       if (tametext(ti:ti)==NULL) then          ! How do you match a tame text string?
@@ -905,16 +905,16 @@ character(len=:),allocatable :: tbookmark, wbookmark
             do while (wildtext(wi:wi) == '*')    ! The tame way: unique up on it!
                wi=wi+1                           ! "x" matches "x*"
                if(wildtext(wi:wi)==NULL)exit
-            enddo
-         endif
+            end do
+         end if
          if (wildtext(wi:wi)==NULL)then
             glob=.true.
             return                               ! "x" matches "x"
-         endif
+         end if
          glob=.false.
          return                                  ! "x" doesn't match "xy"
-      endif
-   enddo
+      end if
+   end do
 end function glob
 
 !> Returns the length of the string representation of 'i'
@@ -1002,7 +1002,7 @@ function is_fortran_name(line) result (lout)
              & .and. len(name) <= 63
         else
             lout = .false.
-        endif
+        end if
     end function is_fortran_name
 !>
 !!### NAME
@@ -1055,7 +1055,7 @@ function is_fortran_name(line) result (lout)
 !!          if(ios /= 0) exit
 !!          call notabs(in,out,iout)
 !!          write(*,'(a)')out(:iout)
-!!       enddo
+!!       end do
 !!    end program demo_notabs
 !!
 !!### SEE ALSO
@@ -1103,9 +1103,9 @@ integer                       :: iade         ! ADE (ASCII Decimal Equivalent) o
             else
                outstr(ipos:ipos)=c
                ipos=ipos+1
-            endif
+            end if
          end select EXPAND_TABS
-      enddo SCAN_LINE
+      end do SCAN_LINE
 
       ipos=min(ipos,lenout)                   ! tabs or newline or return characters or last character might have gone too far
       ilen=len_trim(outstr(:ipos))            ! trim trailing spaces

@@ -69,7 +69,7 @@ contains
            &alphanumerics, "-" and "_"  and start with a letter ::'//name
         else
           bad_name_error=.false.
-        endif
+        end if
 
     end function bad_name_error
 
@@ -171,8 +171,8 @@ contains
               write(stderr,'("<ERROR>",a)')trim(message)
            else
               write(stderr,'("<INFO> ",a)')trim(message)
-           endif
-        endif
+           end if
+        end if
         stop value
     end subroutine fpm_stop
 

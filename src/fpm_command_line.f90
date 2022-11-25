@@ -282,24 +282,24 @@ contains
                 names=unnamed(2:)
             else
                 names=[character(len=len(names)) :: ]
-            endif
+            end if
 
 
             if(specified('target') )then
                call split(sget('target'),tnames,delimiters=' ,:')
                names=[character(len=max(len(names),len(tnames))) :: names,tnames]
-            endif
+            end if
 
             ! convert --all to '*'
             if(lget('all'))then
                names=[character(len=max(len(names),1)) :: names,'*' ]
-            endif
+            end if
 
             ! convert special string '..' to equivalent (shorter) '*'
             ! to allow for a string that does not require shift-key and quoting
             do i=1,size(names)
                if(names(i)=='..')names(i)='*'
-            enddo
+            end do
 
             c_compiler = sget('c-compiler')
             cxx_compiler = sget('cxx-compiler')
@@ -374,7 +374,7 @@ contains
                    write(stderr,'(*(7x,g0,/))') &
                    & '<USAGE> fpm new NAME [[--lib|--src] [--app] [--test] [--example]]|[--full|--bare] [--backfill]'
                    call fpm_stop(1,'directory name required')
-                endif
+                end if
             case(2)
                 name=trim(unnamed(2))
             case default
@@ -388,15 +388,15 @@ contains
                if (allocated(error)) then
                   write(stderr, '("[Error]", 1x, a)') error%message
                   stop 1
-               endif
-            endif
+               end if
+            end if
             name=canon_path(name)
             if( .not.is_fortran_name(to_fortran_name(basename(name))) )then
                 write(stderr,'(g0)') [ character(len=72) :: &
                 & '<ERROR> the fpm project name must be made of up to 63 ASCII letters,', &
                 & '        numbers, underscores, or hyphens, and start with a letter.']
                 call fpm_stop(4,' ')
-            endif
+            end if
 
 
             allocate(fpm_new_settings :: cmd_settings)
@@ -432,7 +432,7 @@ contains
                  & with_full=lget('full'),               &
                  & with_bare=lget('bare'),               &
                  & verbose=lget('verbose') )
-            endif
+            end if
 
         case('help','manual')
             call set_args(common_args, help_help,version_text)
@@ -441,10 +441,10 @@ contains
                    unnamed=['   ', 'fpm']
                 else
                    unnamed=manual
-                endif
+                end if
             elseif(unnamed(2)=='manual')then
                 unnamed=manual
-            endif
+            end if
             allocate(character(len=widest) :: help_text(0))
             do i=2,size(unnamed)
                 select case(unnamed(i))
@@ -478,7 +478,7 @@ contains
                    & '<ERROR> unknown help topic "'//trim(unnamed(i))//'"']
                    !!& '<ERROR> unknown help topic "'//trim(unnamed(i)).'not found in:',manual]
                 end select
-            enddo
+            end do
             call printhelp(help_text)
 
         case('install')
@@ -521,7 +521,7 @@ contains
                 help_text = [character(widest) :: help_list_nodash, help_list_dash]
             else
                 help_text = help_list_nodash
-            endif
+            end if
             call printhelp(help_text)
 
         case('test')
@@ -534,18 +534,18 @@ contains
                 names=unnamed(2:)
             else
                 names=[character(len=len(names)) :: ]
-            endif
+            end if
 
             if(specified('target') )then
                call split(sget('target'),tnames,delimiters=' ,:')
                names=[character(len=max(len(names),len(tnames))) :: names,tnames]
-            endif
+            end if
 
             ! convert special string '..' to equivalent (shorter) '*'
             ! to allow for a string that does not require shift-key and quoting
             do i=1,size(names)
                if(names(i)=='..')names(i)='*'
-            enddo
+            end do
 
             c_compiler = sget('c-compiler')
             cxx_compiler = sget('cxx-compiler')
@@ -580,7 +580,7 @@ contains
                 names=unnamed(2:)
             else
                 names=[character(len=len(names)) :: ]
-            endif
+            end if
 
             allocate(fpm_update_settings :: cmd_settings)
             cmd_settings=fpm_update_settings(name=names, &
@@ -621,9 +621,9 @@ contains
                     write(stderr,'(*(a))')'<ERROR> unknown subcommand [', &
                      & trim(cmdarg), ']'
                     help_text = [character(widest) :: help_list_dash, help_usage]
-                endif
+                end if
                 call printhelp(help_text)
-            endif
+            end if
 
         end select
 
@@ -640,7 +640,7 @@ contains
         val_compiler=sget('compiler')
         if(val_compiler=='') then
             val_compiler='gfortran'
-        endif
+        end if
 
         val_flag = " " // sget('flag')
         val_cflag = " " // sget('c-flag')
@@ -660,8 +660,8 @@ contains
                write(stdout,'(g0)')(trim(lines(iii)), iii=1, ii)
            else
                write(stdout,'(a)')'<WARNING> *printhelp* output requested is empty'
-           endif
-        endif
+           end if
+        end if
         stop
     end subroutine printhelp
 

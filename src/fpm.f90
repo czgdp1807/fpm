@@ -107,7 +107,7 @@ subroutine build_model(model, settings, package, error)
             model%packages(i)%name = dependency%name
             call package%version%to_string(version)
             model%packages(i)%version = version
-            
+
             if (allocated(dependency%preprocess)) then
                 do j = 1, size(dependency%preprocess)
                     if (dependency%preprocess(j)%name == "cpp") then
@@ -188,7 +188,7 @@ subroutine build_model(model, settings, package, error)
 
         if (allocated(error)) then
             return
-        endif
+        end if
 
     end if
     if (allocated(package%executable)) then
@@ -218,9 +218,9 @@ subroutine build_model(model, settings, package, error)
 
         if (allocated(error)) then
             return
-        endif
+        end if
 
-    endif
+    end if
 
 
     if (settings%verbose) then
@@ -313,12 +313,12 @@ end if
 if(settings%list)then
     do i=1,size(targets)
         write(stderr,*) targets(i)%ptr%output_file
-    enddo
+    end do
 else if (settings%show_model) then
     call show_model(model)
 else
     call build_package(targets,model,verbose=settings%verbose)
-endif
+end if
 
 end subroutine cmd_build
 
@@ -435,8 +435,8 @@ subroutine cmd_run(settings,test)
            else if(settings%verbose)then
               write(stderr,'(A)',advance="yes")'<INFO>when more than one executable is available'
               write(stderr,'(A)',advance="yes")'      program names must be specified.'
-           endif
-        endif
+           end if
+        end if
 
         call compact_list_all()
 
@@ -444,7 +444,7 @@ subroutine cmd_run(settings,test)
            call fpm_stop(0,'')
         else
            call fpm_stop(1,'')
-        endif
+        end if
 
     end if
 
@@ -464,15 +464,15 @@ subroutine cmd_run(settings,test)
                     else
                        call run(settings%runner//' '//executables(i)%s//" "//settings%args, &
                              echo=settings%verbose, exitstat=stat(i))
-                    endif
+                    end if
                 else
                     if(.not.allocated(settings%args))then
                        call run(executables(i)%s,echo=settings%verbose, exitstat=stat(i))
                     else
                        call run(executables(i)%s//" "//settings%args,echo=settings%verbose, &
                              exitstat=stat(i))
-                    endif
-                endif
+                    end if
+                end if
             else
                 call fpm_stop(1,'*cmd_run*:'//executables(i)%s//' not found')
             end if
@@ -487,7 +487,7 @@ subroutine cmd_run(settings,test)
             call fpm_stop(1,'*cmd_run*:stopping due to failed executions')
         end if
 
-    endif
+    end if
     contains
     subroutine compact_list_all()
     integer, parameter :: LINE_WIDTH = 80
@@ -526,7 +526,7 @@ subroutine cmd_run(settings,test)
             write(stderr,'(A)',advance=(merge("yes","no ",modulo(j,nCol)==0))) &
                 & [character(len=col_width) :: basename(executables(i)%s, suffix=.false.)]
             j = j + 1
-        enddo
+        end do
         write(stderr,*)
     end subroutine compact_list
 

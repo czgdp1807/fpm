@@ -95,7 +95,7 @@ if(command_argument_count()==0)then  ! assume if called with no arguments to do 
          open(file='_test_cli',newunit=lun,delim='quote')
          close(unit=lun,status='delete')
          exit
-      endif
+      end if
       ! blank out name group EXPECTED
       name=[(repeat(' ',len(name)),i=1,max_names)] ! the words on the command line sans the subcommand name
       profile=""                     ! --profile PROF
@@ -126,7 +126,7 @@ if(command_argument_count()==0)then  ! assume if called with no arguments to do 
              read(lun,nml=act_cli,iostat=ios,iomsg=message)
              if(ios/=0)then
                 write(*,'(a)')'ERROR:',trim(message)
-             endif
+             end if
              close(unit=lun)
              ! compare results to expected values
              subtally=[logical ::]
@@ -150,18 +150,18 @@ if(command_argument_count()==0)then  ! assume if called with no arguments to do 
                    compiler_options()
                 write(*,nml=act_cli,delim='quote')
                 tally=[tally,.false.]
-             endif
+             end if
           else
              write(*,'(*(g0))')'PASSED: TEST ',i,' EXPECTED BAD STATUS: expected ',cstat,' ',estat, &
              ' actual ',act_cstat,' ',act_estat,' for [',trim(cmd),']'
              tally=[tally,.true.]
-          endif
+          end if
       else
           write(*,'(*(g0))')'FAILED: TEST ',i,'BAD STATUS: expected ',cstat,' ',estat,' actual ',act_cstat,' ',act_estat,&
           ' for [',trim(cmd),']'
           tally=[tally,.false.]
-      endif
-   enddo
+      end if
+   end do
    ! write up total results and if anything failed exit with a non-zero status
    write(*,'(*(g0))')'TALLY;',tally
    if(all(tally))then
@@ -169,7 +169,7 @@ if(command_argument_count()==0)then  ! assume if called with no arguments to do 
    else
       write(*,*)'FAILED: PASSED=',count(tally),' FAILED=',count(.not.tally)
       stop 4
-   endif
+   end if
 else
    ! call this program with arguments
    !=============================================
@@ -180,11 +180,11 @@ else
    do j=1,command_argument_count()
       call get_command_argument(number=j,value=big_argument,length=ilen)
       write(*,'(*(g0))')j,'[',big_argument(:ilen),']'
-   enddo
+   end do
    end block debugit
    !=============================================
    call parse()
-endif
+end if
 
 contains
 

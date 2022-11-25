@@ -74,7 +74,7 @@ contains
         end if
         if (bad_name_error(error,'executable',self%name))then
            return
-        endif
+        end if
         call get_value(table, "source-dir", self%source_dir, "app")
         call get_value(table, "main", self%main, "main.f90")
 
