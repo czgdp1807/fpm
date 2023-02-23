@@ -2,7 +2,9 @@
 
 set -ex
 
-fpm build --show-model
+wget -O fpm https://github.com/fortran-lang/fpm/releases/download/v0.7.0/fpm-0.7.0-linux-x86_64
+chmod +x fpm
+./fpm build --show-model
 
 mkdir -p build/lfortran_BC003944AE0DF3D6/fpm/
 lfortran --no-warnings -c ././src/fpm_strings.f90  --cpp -J build/lfortran_BC003944AE0DF3D6 -Ibuild/lfortran_BC003944AE0DF3D6 -o build/lfortran_BC003944AE0DF3D6/fpm/src_fpm_strings.f90.o
