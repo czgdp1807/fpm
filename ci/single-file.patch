@@ -3,8 +3,8 @@ index 12ec05aa..20425dfd 100644
 --- a/fpm.toml
 +++ b/fpm.toml
 @@ -14,22 +14,5 @@ rev = "2f5eaba864ff630ba0c3791126a3f811b6e437f3"
- git = "https://github.com/urbanjost/M_CLI2.git"
- rev = "ea6bbffc1c2fb0885e994d37ccf0029c99b19f24"
+ git = "https://github.com/HarshitaKalani/M_CLI2.git"
+ rev = "adaf33f4f82c08325ffa8d9563668c5d8880461f"
  
 -[[test]]
 -name = "cli-test"

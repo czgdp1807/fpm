@@ -505,7 +505,7 @@ character(len=:,kind=tfc),allocatable :: littlefile(:)
            &'#main="tester.f90"                                                              ',&
            &'#link = ["blas", "lapack"]                                                      ',&
            &'#[test.dependencies]                                                            ',&
-           &'#M_CLI2  = { git = "https://github.com/urbanjost/M_CLI2.git" }                  ',&
+           &'#M_CLI2  = { git = "https://github.com/HarshitaKalani/M_CLI2.git" }                  ',&
            &'#M_io    = { git = "https://github.com/urbanjost/M_io.git" }                    ',&
            &'#M_system= { git = "https://github.com/urbanjost/M_system.git" }                ',&
            &'']
